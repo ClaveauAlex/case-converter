@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Converter</title>
+    <style>
+        .title{
+            font-size: 2rem;
+        }
+
+        .actions{
+            margin-top: 1rem;
+        }
+
+        button{
+            border: none;
+            border-radius: 0.2rem;
+            padding: 0.5rem;
+            font-size: 1rem;
+           background-color: lightsalmon;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">Case Converter</div>
+    <textarea name="case-converter" id="case-converter" cols="100" rows="20"></textarea>
+    <div class="actions">
+        <button id="upper-case">Upper Case</button>
+        <button id="lower-case">Lower Case</button>
+        <button id="proper-case">Proper Case</button>
+        <button id="sentence-case">Sentence Case</button>
+        <button id="save-text-file">Save Text File</button>
+    </div>
+    <script>
+        document.getElementById("upper-case").addEventListener("click", function () {
+            document.getElementById("case-converter").value = document.getElementById("case-converter").value.toUpperCase()
+        })
+        document.getElementById("lower-case").addEventListener("click", function () {
+            document.getElementById("case-converter").value = document.getElementById("case-converter").value.toLowerCase()
+        })
+        document.getElementById("proper-case").addEventListener("click", function () {
+            document.getElementById("case-converter").value = titleCase(document.getElementById("case-converter").value)
+            function titleCase(str) {
+                return str
+                        .split(' ')
+                        .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
+                        .join(' ')
+            }
+        })
+        document.getElementById("sentence-case").addEventListener("click", function () {
+            document.getElementById("case-converter").value = SentenceCase(document.getElementById("case-converter").value)
+            function SentenceCase(str) {
+                return str
+                        .split('. ')
+                        .map((phrase) => phrase[0].toUpperCase() + phrase.substring(1).toLowerCase())
+                        .join('. ')
+            }
+        })
+        document.getElementById("save-text-file").addEventListener("click", function () {
+            download("text.txt", document.getElementById("case-converter").value);
+            function download(filename, text) {
+                //We are creating a hidden link to download the file
+                let element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                element.setAttribute('download', filename);
+
+                //We hidde the link
+                element.style.display = 'none';
+                //We add inside the dom, well inside the body
+                document.body.appendChild(element);
+
+                //We emulate a click on the link
+                element.click();
+                //And finally we remove it
+                document.body.removeChild(element);
+            }
+
+        })
+    </script>
+</body>
+</html>
